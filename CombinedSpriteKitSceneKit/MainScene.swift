@@ -103,7 +103,7 @@ class MainScene: SCNScene {
         
         //设置地板
         let wfloor = 25.0, hfloor = 25.0
-        let anglefloor = -CGFloat.pi / 2.5
+        let anglefloor = -CGFloat.pi / 2.1
         let danceFloor = SCNPlane(width: wfloor, height: hfloor)
         let floorNode = SCNNode(geometry: danceFloor)
         floorNode.position = SCNVector3(0, 0, 0)
