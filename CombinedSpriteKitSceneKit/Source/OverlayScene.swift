@@ -8,7 +8,7 @@
 
 import UIKit
 import SpriteKit
-//import Spine
+import Spine
 
 class OverlayScene: SKScene {
     
@@ -63,12 +63,12 @@ class OverlayScene: SKScene {
     }
     
     func addGoblin() {
-//        guard let goblin = Skeleton(fromJSON: "goblins-ess", atlas: "Goblins", skin: "goblin") else {
-//          return
-//        }
-//        goblin.position = CGPoint(x: 0, y: 0)
-//        goblin.setScale(0.3)
-//        addChild(goblin)
+        guard let goblin = Skeleton(fromJSON: "goblins-ess", atlas: "Goblins", skin: "goblin") else {
+          return
+        }
+        goblin.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        goblin.setScale(0.3)
+        addChild(goblin)
     }
 }
 
