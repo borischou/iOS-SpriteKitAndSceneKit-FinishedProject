@@ -71,14 +71,45 @@ class MainScene: SCNScene {
         rootNode.addChildNode(lightNode)
          */
         
-        //设置平面
-        let plane = SCNPlane(width: 25, height: 25)
-        let planeNode = SCNNode(geometry: plane)
-        let position = SCNVector3(0, 0, 0)
-        planeNode.position = position
-        planeNode.rotation = SCNVector4(1, 0, 0, -CGFloat.pi / 2.5)
-        planeNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "hardwood_floor")?.cgImage
-        rootNode.addChildNode(planeNode)
+        //background.contents = UIImage(named: "wall")?.cgImage
+        
+        let anglelw = Float.pi / 2
+        let widthWall = 25.0
+        let heightWall = 25.0
+        
+        //设置左边墙
+        let leftWall = SCNPlane(width: widthWall, height: heightWall)
+        let lwNode = SCNNode(geometry: leftWall)
+        lwNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "wall")?.cgImage
+        lwNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: anglelw)
+        lwNode.position = SCNVector3(-(widthWall / 2), heightWall / 2, 0)
+        rootNode.addChildNode(lwNode)
+        
+        //设置右边墙
+        let rightWall = SCNPlane(width: widthWall, height: heightWall)
+        let rwNode = SCNNode(geometry: rightWall)
+        rwNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "wall")?.cgImage
+        rwNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: -anglelw)
+        rwNode.position = SCNVector3(widthWall / 2, heightWall / 2, 0)
+        rootNode.addChildNode(rwNode)
+        
+        //设置背景
+        let wback = 26.0, hback = 15.0
+        let backWall = SCNPlane(width: wback, height: hback)
+        let wallNode = SCNNode(geometry: backWall)
+        wallNode.position = SCNVector3(0, hback / 2, -(wback / 2))
+        wallNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "lothar")?.cgImage
+        rootNode.addChildNode(wallNode)
+        
+        //设置地板
+        let wfloor = 25.0, hfloor = 25.0
+        let anglefloor = -CGFloat.pi / 2.5
+        let danceFloor = SCNPlane(width: wfloor, height: hfloor)
+        let floorNode = SCNNode(geometry: danceFloor)
+        floorNode.position = SCNVector3(0, 0, 0)
+        floorNode.rotation = SCNVector4(1, 0, 0, anglefloor)
+        floorNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "carpet")?.cgImage
+        rootNode.addChildNode(floorNode)
         
         //设置光影
         let omniLight = SCNLight()
@@ -89,7 +120,7 @@ class MainScene: SCNScene {
         
         //设置镜头
         let camera = SCNCamera()
-        let cameraConstraint = SCNLookAtConstraint(target: planeNode)
+        let cameraConstraint = SCNLookAtConstraint(target: floorNode)
         cameraConstraint.isGimbalLockEnabled = true
         cameraNode = SCNNode()
         cameraNode.camera = camera
