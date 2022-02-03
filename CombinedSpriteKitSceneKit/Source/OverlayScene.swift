@@ -88,6 +88,7 @@ class OverlayScene: SKScene {
         }
         
         addName(for: goblin)
+        addBubble(said: "hello", for: goblin)
     }
     
     func addName(for goblin: SKNode) {
@@ -96,8 +97,21 @@ class OverlayScene: SKScene {
         let name = SKLabelNode(text: "我是昵称")
         name.fontSize = 50
         name.fontColor = .white
+        name.fontName = "Helvetica"
         name.position = CGPoint(x: x, y: y)
         goblin.addChild(name)
+    }
+    
+    func addBubble(said text: String, for goblin: SKNode) {
+        let bubble = SKLabelNode(text: text)
+        bubble.fontColor = .black
+        bubble.fontName = "Helvetica"
+        bubble.fontSize = 50
+        bubble.position = CGPoint(x: 0, y: -15)
+        let sprite = SKSpriteNode(color: .white, size: CGSize(width: bubble.frame.width * 1.5, height: bubble.frame.height * 1.5))
+        sprite.position = CGPoint(x: 0, y: 350)
+        sprite.addChild(bubble)
+        goblin.addChild(sprite)
     }
 }
 
