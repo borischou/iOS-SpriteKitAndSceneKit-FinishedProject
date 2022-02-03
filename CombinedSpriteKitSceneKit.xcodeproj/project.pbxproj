@@ -180,6 +180,7 @@
 				TargetAttributes = {
 					602C90131B0DD5B5001EE880 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = R8SXHLJ4HE;
 					};
 				};
 			};
@@ -374,8 +375,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CombinedSpriteKitSceneKit/CombinedSpriteKitSceneKit.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
-				DEVELOPMENT_TEAM = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R8SXHLJ4HE;
 				INFOPLIST_FILE = CombinedSpriteKitSceneKit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xingin.dancefloor;
@@ -392,8 +394,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CombinedSpriteKitSceneKit/CombinedSpriteKitSceneKit.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
-				DEVELOPMENT_TEAM = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R8SXHLJ4HE;
 				INFOPLIST_FILE = CombinedSpriteKitSceneKit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xingin.dancefloor;
