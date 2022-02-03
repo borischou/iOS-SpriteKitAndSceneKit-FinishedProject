@@ -13,8 +13,8 @@ import SpriteKit
 class MainScene: SCNScene {
     
     var cubeNode: SCNNode!
-    var cameraNode: SCNNode!
-    var lightNode: SCNNode!
+    lazy var cameraNode: SCNNode = SCNNode()
+    lazy var lightNode: SCNNode = SCNNode()
     
     override init() {
         super.init()
@@ -71,8 +71,22 @@ class MainScene: SCNScene {
         rootNode.addChildNode(lightNode)
          */
         
-        //background.contents = UIImage(named: "wall")?.cgImage
-        
+        buildSet()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)!
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "isPaused" {
+            if let c = change, let p = c[NSKeyValueChangeKey.newKey] as? Bool {
+                isPaused = p
+            }
+        }
+    }
+    
+    func buildSet() {
         let anglelw = Float.pi / 2
         let widthWall = 25.0
         let heightWall = 25.0
@@ -114,7 +128,6 @@ class MainScene: SCNScene {
         //设置光影
         let omniLight = SCNLight()
         omniLight.type = SCNLight.LightType.omni
-        lightNode = SCNNode()
         lightNode.light = omniLight
         lightNode.position = SCNVector3(x: 0, y: 5, z: 0)
         
@@ -122,24 +135,11 @@ class MainScene: SCNScene {
         let camera = SCNCamera()
         let cameraConstraint = SCNLookAtConstraint(target: floorNode)
         cameraConstraint.isGimbalLockEnabled = true
-        cameraNode = SCNNode()
         cameraNode.camera = camera
         cameraNode.constraints = [cameraConstraint]
         cameraNode.light = omniLight
         cameraNode.position = SCNVector3(x: 0, y: 1, z: 10)
         rootNode.addChildNode(cameraNode)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)!
-    }
-    
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == "isPaused" {
-            if let c = change, let p = c[NSKeyValueChangeKey.newKey] as? Bool {
-                isPaused = p
-            }
-        }
     }
 }
 

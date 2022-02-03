@@ -8,6 +8,7 @@
 
 import UIKit
 import SpriteKit
+//import Spine
 
 class OverlayScene: SKScene {
     
@@ -38,6 +39,8 @@ class OverlayScene: SKScene {
         
         //addChild(pauseNode)
         //addChild(scoreNode)
+        
+        addGoblin()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -51,13 +54,21 @@ class OverlayScene: SKScene {
         if pauseNode.contains(location!) {
             if !isPaused {
                 pauseNode.texture = SKTexture(imageNamed: "Play Button")
-            }
-            else {
+            } else {
                 pauseNode.texture = SKTexture(imageNamed: "Pause Button")
             }
             
             isPaused = !isPaused
         }
+    }
+    
+    func addGoblin() {
+//        guard let goblin = Skeleton(fromJSON: "goblins-ess", atlas: "Goblins", skin: "goblin") else {
+//          return
+//        }
+//        goblin.position = CGPoint(x: 0, y: 0)
+//        goblin.setScale(0.3)
+//        addChild(goblin)
     }
 }
 
