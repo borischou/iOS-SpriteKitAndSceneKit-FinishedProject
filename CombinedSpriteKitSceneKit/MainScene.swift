@@ -97,7 +97,7 @@ class MainScene: SCNScene {
         let wback = 26.0, hback = 15.0
         let backWall = SCNPlane(width: wback, height: hback)
         let wallNode = SCNNode(geometry: backWall)
-        wallNode.position = SCNVector3(0, hback / 2, -(wback / 2))
+        wallNode.position = SCNVector3(0, hback / 2.5, -(wback / 2))
         wallNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "lothar")?.cgImage
         rootNode.addChildNode(wallNode)
         
@@ -108,7 +108,7 @@ class MainScene: SCNScene {
         let floorNode = SCNNode(geometry: danceFloor)
         floorNode.position = SCNVector3(0, 0, 0)
         floorNode.rotation = SCNVector4(1, 0, 0, anglefloor)
-        floorNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "carpet")?.cgImage
+        floorNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "hardwood_floor")?.cgImage
         rootNode.addChildNode(floorNode)
         
         //设置光影
@@ -126,7 +126,7 @@ class MainScene: SCNScene {
         cameraNode.camera = camera
         cameraNode.constraints = [cameraConstraint]
         cameraNode.light = omniLight
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
+        cameraNode.position = SCNVector3(x: 0, y: 1, z: 10)
         rootNode.addChildNode(cameraNode)
     }
 
