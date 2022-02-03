@@ -40,7 +40,12 @@ class OverlayScene: SKScene {
         //addChild(pauseNode)
         //addChild(scoreNode)
         
-        addGoblin()
+        run(SKAction.repeatForever(
+          SKAction.sequence([
+            SKAction.run(addGoblin),
+            SKAction.wait(forDuration: 1.0)
+            ])
+        ))
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -62,13 +67,37 @@ class OverlayScene: SKScene {
         }
     }
     
+    func random() -> CGFloat {
+      return CGFloat(Float(arc4random()) / Float(0xFFFFFFFF))
+    }
+    
+    func random(min: CGFloat, max: CGFloat) -> CGFloat {
+      return random() * (max - min) + min
+    }
+    
     func addGoblin() {
         guard let goblin = Skeleton(fromJSON: "goblins-ess", atlas: "Goblins", skin: "goblin") else {
           return
         }
-        goblin.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        goblin.position = CGPoint(x: random(min: 10, max: size.width - 10), y: random(min: 10, max: size.height / 2))
         goblin.setScale(0.3)
         addChild(goblin)
+        
+        if let walk = goblin.animation(named: "walk") {
+            goblin.run(SKAction.repeatForever(walk))
+        }
+        
+        addName(for: goblin)
+    }
+    
+    func addName(for goblin: SKNode) {
+        let x: CGFloat = 0
+        let y: CGFloat = -30
+        let name = SKLabelNode(text: "我是昵称")
+        name.fontSize = 50
+        name.fontColor = .white
+        name.position = CGPoint(x: x, y: y)
+        goblin.addChild(name)
     }
 }
 
