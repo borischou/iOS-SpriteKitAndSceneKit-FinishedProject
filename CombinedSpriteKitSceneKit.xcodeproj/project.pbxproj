@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		602C901A1B0DD5B5001EE880 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602C90191B0DD5B5001EE880 /* AppDelegate.swift */; };
+		4566685127AB9230003DE047 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4566685027AB9230003DE047 /* AppDelegate.swift */; };
 		602C901C1B0DD5B5001EE880 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602C901B1B0DD5B5001EE880 /* ViewController.swift */; };
 		602C901F1B0DD5B5001EE880 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 602C901D1B0DD5B5001EE880 /* Main.storyboard */; };
 		602C90211B0DD5B5001EE880 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 602C90201B0DD5B5001EE880 /* Images.xcassets */; };
@@ -30,9 +30,9 @@
 
 /* Begin PBXFileReference section */
 		4566684F27AB85C9003DE047 /* CombinedSpriteKitSceneKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CombinedSpriteKitSceneKit.entitlements; sourceTree = "<group>"; };
+		4566685027AB9230003DE047 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		602C90141B0DD5B5001EE880 /* CombinedSpriteKitSceneKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CombinedSpriteKitSceneKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		602C90181B0DD5B5001EE880 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		602C90191B0DD5B5001EE880 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		602C901B1B0DD5B5001EE880 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		602C901E1B0DD5B5001EE880 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		602C90201B0DD5B5001EE880 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -87,7 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				4566684F27AB85C9003DE047 /* CombinedSpriteKitSceneKit.entitlements */,
-				602C90191B0DD5B5001EE880 /* AppDelegate.swift */,
+				4566685027AB9230003DE047 /* AppDelegate.swift */,
 				602C901B1B0DD5B5001EE880 /* ViewController.swift */,
 				602C90391B0DD5F3001EE880 /* MainScene.swift */,
 				602C903F1B0DD838001EE880 /* OverlayScene.swift */,
@@ -209,9 +209,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4566685127AB9230003DE047 /* AppDelegate.swift in Sources */,
 				602C903A1B0DD5F3001EE880 /* MainScene.swift in Sources */,
 				602C901C1B0DD5B5001EE880 /* ViewController.swift in Sources */,
-				602C901A1B0DD5B5001EE880 /* AppDelegate.swift in Sources */,
 				602C90401B0DD838001EE880 /* OverlayScene.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -344,12 +344,13 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				DEVELOPMENT_TEAM = R8SXHLJ4HE;
 				INFOPLIST_FILE = CombinedSpriteKitSceneKit/Info.plist;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tutsplus.CombinedSpriteKitSceneKit.zbl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 			};
 			name = Debug;
 		};
@@ -361,12 +362,13 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				DEVELOPMENT_TEAM = R8SXHLJ4HE;
 				INFOPLIST_FILE = CombinedSpriteKitSceneKit/Info.plist;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tutsplus.CombinedSpriteKitSceneKit.zbl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 			};
 			name = Release;
 		};

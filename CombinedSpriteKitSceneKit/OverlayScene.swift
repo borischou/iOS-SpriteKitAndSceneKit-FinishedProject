@@ -16,7 +16,7 @@ class OverlayScene: SKScene {
     
     var score = 0 {
         didSet {
-            self.scoreNode.text = "Score: \(self.score)"
+            scoreNode.text = "Score: \(score)"
         }
     }
     
@@ -26,18 +26,18 @@ class OverlayScene: SKScene {
         self.backgroundColor = .clear
         
         let spriteSize = size.width/12
-        self.pauseNode = SKSpriteNode(imageNamed: "Pause Button")
-        self.pauseNode.size = CGSize(width: spriteSize, height: spriteSize)
-        self.pauseNode.position = CGPoint(x: spriteSize + 8, y: spriteSize + 8)
+        pauseNode = SKSpriteNode(imageNamed: "Pause Button")
+        pauseNode.size = CGSize(width: spriteSize, height: spriteSize)
+        pauseNode.position = CGPoint(x: spriteSize + 8, y: spriteSize + 8)
         
-        self.scoreNode = SKLabelNode(text: "Score: 0")
-        self.scoreNode.fontName = "DINAlternate-Bold"
-        self.scoreNode.fontColor = .black
-        self.scoreNode.fontSize = 24
-        self.scoreNode.position = CGPoint(x: size.width/2, y: self.pauseNode.position.y - 9)
+        scoreNode = SKLabelNode(text: "Score: 0")
+        scoreNode.fontName = "DINAlternate-Bold"
+        scoreNode.fontColor = .black
+        scoreNode.fontSize = 24
+        scoreNode.position = CGPoint(x: size.width/2, y: pauseNode.position.y - 9)
         
-        self.addChild(self.pauseNode)
-        self.addChild(self.scoreNode)
+        addChild(pauseNode)
+        addChild(scoreNode)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -48,15 +48,15 @@ class OverlayScene: SKScene {
         let touch = touches.first
         let location = touch?.location(in: self)
         
-        if self.pauseNode.contains(location!) {
-            if !self.isPaused {
-                self.pauseNode.texture = SKTexture(imageNamed: "Play Button")
+        if pauseNode.contains(location!) {
+            if !isPaused {
+                pauseNode.texture = SKTexture(imageNamed: "Play Button")
             }
             else {
-                self.pauseNode.texture = SKTexture(imageNamed: "Pause Button")
+                pauseNode.texture = SKTexture(imageNamed: "Pause Button")
             }
             
-            self.isPaused = !self.isPaused
+            isPaused = !isPaused
         }
     }
 }

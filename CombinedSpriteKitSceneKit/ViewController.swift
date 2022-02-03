@@ -18,14 +18,14 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        self.sceneView = SCNView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
-        self.sceneView.scene = MainScene()
-        self.view.addSubview(self.sceneView)
+        sceneView = SCNView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
+        sceneView.scene = MainScene()
+        view.addSubview(sceneView)
         
-        self.spriteScene = OverlayScene(size: self.view.bounds.size)
-        self.sceneView.overlaySKScene = self.spriteScene
+        spriteScene = OverlayScene(size: view.bounds.size)
+        sceneView.overlaySKScene = spriteScene
         
-        self.spriteScene.addObserver(self.sceneView.scene!, forKeyPath: "isPaused", options: .new, context: nil)
+        spriteScene.addObserver(sceneView.scene!, forKeyPath: "isPaused", options: .new, context: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,12 +35,12 @@ class ViewController: UIViewController {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
-        let location = touch?.location(in: self.sceneView)
-        let hitResults = self.sceneView.hitTest(location!, options: nil)
+        let location = touch?.location(in: sceneView)
+        let hitResults = sceneView.hitTest(location!, options: nil)
         
         for result in (hitResults) {
-            if result.node == (self.sceneView.scene as! MainScene).cubeNode {
-                self.spriteScene.score += 1
+            if result.node == (sceneView.scene as! MainScene).cubeNode {
+                spriteScene.score += 1
             }
         }
     }
