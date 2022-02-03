@@ -81,9 +81,11 @@ class MainScene: SCNScene {
         rootNode.addChildNode(planeNode)
         
         //设置光影
-        let ambientLight = SCNLight()
-        ambientLight.type = SCNLight.LightType.ambient
-        ambientLight.color = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
+        let omniLight = SCNLight()
+        omniLight.type = SCNLight.LightType.omni
+        lightNode = SCNNode()
+        lightNode.light = omniLight
+        lightNode.position = SCNVector3(x: 0, y: 5, z: 0)
         
         //设置镜头
         let camera = SCNCamera()
@@ -92,7 +94,7 @@ class MainScene: SCNScene {
         cameraNode = SCNNode()
         cameraNode.camera = camera
         cameraNode.constraints = [cameraConstraint]
-        cameraNode.light = ambientLight
+        cameraNode.light = omniLight
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
         rootNode.addChildNode(cameraNode)
     }
