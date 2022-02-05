@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1E3855F9130A06AD643A4E57 /* Pods_CombinedSpriteKitSceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F73A19B7BDF6E187101969EC /* Pods_CombinedSpriteKitSceneKit.framework */; };
+		4565606D27AD66520053C1F3 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4565606C27AD66520053C1F3 /* DataSource.swift */; };
+		4565606F27AD6D220053C1F3 /* DataProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4565606E27AD6D220053C1F3 /* DataProtocol.swift */; };
+		4565607127AD6EB50053C1F3 /* DataFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4565607027AD6EB50053C1F3 /* DataFactory.swift */; };
 		4566685127AB9230003DE047 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4566685027AB9230003DE047 /* AppDelegate.swift */; };
 		4566685927ABCB1D003DE047 /* goblins-ess.json in Resources */ = {isa = PBXBuildFile; fileRef = 4566685527ABCB1D003DE047 /* goblins-ess.json */; };
 		4566685A27ABCB1D003DE047 /* shuxiaohu.json in Resources */ = {isa = PBXBuildFile; fileRef = 4566685727ABCB1D003DE047 /* shuxiaohu.json */; };
@@ -19,6 +22,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4565606C27AD66520053C1F3 /* DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
+		4565606E27AD6D220053C1F3 /* DataProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProtocol.swift; sourceTree = "<group>"; };
+		4565607027AD6EB50053C1F3 /* DataFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataFactory.swift; sourceTree = "<group>"; };
 		4566684F27AB85C9003DE047 /* CombinedSpriteKitSceneKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CombinedSpriteKitSceneKit.entitlements; sourceTree = "<group>"; };
 		4566685027AB9230003DE047 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4566685527ABCB1D003DE047 /* goblins-ess.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "goblins-ess.json"; sourceTree = "<group>"; };
@@ -96,6 +102,9 @@
 				602C901B1B0DD5B5001EE880 /* ViewController.swift */,
 				602C90391B0DD5F3001EE880 /* MainScene.swift */,
 				602C903F1B0DD838001EE880 /* OverlayScene.swift */,
+				4565606C27AD66520053C1F3 /* DataSource.swift */,
+				4565606E27AD6D220053C1F3 /* DataProtocol.swift */,
+				4565607027AD6EB50053C1F3 /* DataFactory.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -266,9 +275,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4566685127AB9230003DE047 /* AppDelegate.swift in Sources */,
+				4565606F27AD6D220053C1F3 /* DataProtocol.swift in Sources */,
 				602C903A1B0DD5F3001EE880 /* MainScene.swift in Sources */,
 				602C901C1B0DD5B5001EE880 /* ViewController.swift in Sources */,
+				4565606D27AD66520053C1F3 /* DataSource.swift in Sources */,
 				602C90401B0DD838001EE880 /* OverlayScene.swift in Sources */,
+				4565607127AD6EB50053C1F3 /* DataFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

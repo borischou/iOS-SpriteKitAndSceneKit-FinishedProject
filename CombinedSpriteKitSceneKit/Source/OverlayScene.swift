@@ -12,6 +12,7 @@ import Spine
 
 class OverlayScene: SKScene {
     
+    /*
     var pauseNode: SKSpriteNode!
     var scoreNode: SKLabelNode!
     
@@ -20,12 +21,15 @@ class OverlayScene: SKScene {
             scoreNode.text = "Score: \(score)"
         }
     }
+     */
+    
+    var dataConsumeTimer: Timer?
     
     override init(size: CGSize) {
         super.init(size: size)
         
         backgroundColor = .clear
-        
+        /*
         let spriteSize = size.width/12
         pauseNode = SKSpriteNode(imageNamed: "Pause Button")
         pauseNode.size = CGSize(width: spriteSize, height: spriteSize)
@@ -37,8 +41,8 @@ class OverlayScene: SKScene {
         scoreNode.fontSize = 24
         scoreNode.position = CGPoint(x: size.width/2, y: pauseNode.position.y - 9)
         
-        //addChild(pauseNode)
-        //addChild(scoreNode)
+        addChild(pauseNode)
+        addChild(scoreNode)
         
         run(SKAction.repeatForever(
           SKAction.sequence([
@@ -46,12 +50,15 @@ class OverlayScene: SKScene {
             SKAction.wait(forDuration: 1.0)
             ])
         ))
+         */
+        dataConsumeTimer = startTimer()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
+    /*
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         let location = touch?.location(in: self)
@@ -66,6 +73,20 @@ class OverlayScene: SKScene {
             isPaused = !isPaused
         }
     }
+     */
+}
+
+extension OverlayScene {
+    
+    func startTimer() -> Timer {
+        let interval: TimeInterval = 5
+        let timer: Timer = Timer(timeInterval: interval, repeats: true) { [weak self] _ in
+            self?.addGoblin(withUid: "123")
+        }
+        RunLoop.main.add(timer, forMode: .common)
+        timer.fire()
+        return timer
+    }
     
     func random() -> CGFloat {
       return CGFloat(Float(arc4random()) / Float(0xFFFFFFFF))
@@ -75,7 +96,7 @@ class OverlayScene: SKScene {
       return random() * (max - min) + min
     }
     
-    func addGoblin() {
+    func addGoblin(withUid uid: String = "") {
         guard let goblin = Skeleton(fromJSON: "goblins-ess", atlas: "Goblins", skin: "goblin") else {
           return
         }
@@ -102,7 +123,7 @@ class OverlayScene: SKScene {
         goblin.addChild(name)
     }
     
-    func addBubble(said text: String, for goblin: SKNode) {
+    func addBubble(said text: String, for goblin: SKNode, duration: TimeInterval = 3) {
         let bubble = SKLabelNode(text: text)
         bubble.fontColor = .black
         bubble.fontName = "Helvetica"
@@ -112,6 +133,12 @@ class OverlayScene: SKScene {
         sprite.position = CGPoint(x: 0, y: 350)
         sprite.addChild(bubble)
         goblin.addChild(sprite)
+        if duration < 0 {
+            return
+        }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + duration) {
+            sprite.removeFromParent()
+        }
     }
 }
 

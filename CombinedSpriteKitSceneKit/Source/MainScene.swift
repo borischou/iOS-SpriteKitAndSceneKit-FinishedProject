@@ -15,6 +15,7 @@ class MainScene: SCNScene {
     var cubeNode: SCNNode!
     lazy var cameraNode: SCNNode = SCNNode()
     lazy var lightNode: SCNNode = SCNNode()
+    lazy var floorNode: SCNNode = SCNNode()
     
     override init() {
         super.init()
@@ -85,8 +86,10 @@ class MainScene: SCNScene {
             }
         }
     }
-    
-    func buildSet() {
+}
+
+extension MainScene {
+    func buildWalls() {
         let anglelw = Float.pi / 2
         let widthWall = 25.0
         let heightWall = 25.0
@@ -114,32 +117,45 @@ class MainScene: SCNScene {
         wallNode.position = SCNVector3(0, hback / 2.5, -(wback / 2))
         wallNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "lothar")?.cgImage
         rootNode.addChildNode(wallNode)
-        
+    }
+    
+    func buildFloor() {
         //设置地板
         let wfloor = 25.0, hfloor = 25.0
         let anglefloor = -CGFloat.pi / 2.1
         let danceFloor = SCNPlane(width: wfloor, height: hfloor)
-        let floorNode = SCNNode(geometry: danceFloor)
-        floorNode.position = SCNVector3(0, 0, 0)
-        floorNode.rotation = SCNVector4(1, 0, 0, anglefloor)
-        floorNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "hardwood_floor")?.cgImage
-        rootNode.addChildNode(floorNode)
-        
-        //设置光影
-        let omniLight = SCNLight()
-        omniLight.type = SCNLight.LightType.omni
-        lightNode.light = omniLight
-        lightNode.position = SCNVector3(x: 0, y: 5, z: 0)
-        
+        let fnode = SCNNode(geometry: danceFloor)
+        fnode.position = SCNVector3(0, 0, 0)
+        fnode.rotation = SCNVector4(1, 0, 0, anglefloor)
+        fnode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "hardwood_floor")?.cgImage
+        rootNode.addChildNode(fnode)
+        floorNode = fnode
+    }
+    
+    func buildCamera() {
         //设置镜头
         let camera = SCNCamera()
         let cameraConstraint = SCNLookAtConstraint(target: floorNode)
         cameraConstraint.isGimbalLockEnabled = true
         cameraNode.camera = camera
         cameraNode.constraints = [cameraConstraint]
-        cameraNode.light = omniLight
+        cameraNode.light = lightNode.light
         cameraNode.position = SCNVector3(x: 0, y: 1, z: 10)
         rootNode.addChildNode(cameraNode)
     }
+    
+    func buildLight() {
+        //设置光影
+        let omniLight = SCNLight()
+        omniLight.type = SCNLight.LightType.omni
+        lightNode.light = omniLight
+        lightNode.position = SCNVector3(x: 0, y: 5, z: 0)
+    }
+    
+    func buildSet() {
+        buildWalls()
+        buildFloor()
+        buildLight()
+        buildCamera()
+    }
 }
-
