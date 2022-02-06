@@ -16,11 +16,32 @@ class DataFactory: NSObject {
     
     lazy var inRoomUsers: [User] = [User]()
     
-    static func consume() -> [User]? {
+    lazy var op: DispatchQueue = DispatchQueue(label: "com.xhs.datafactory.opqueue")
+    
+    static func consume(_ callback: @escaping (([User]) -> Void)) {
         let shared = DataFactory.shared
-        
-        
-        
-        return nil
+        shared.op.async {
+            if shared.inRoomUsers.count > kConsumeLength {
+                var res: [User] = [User]()
+                for (idx, usr) in shared.inRoomUsers.enumerated() where idx < kConsumeLength {
+                    res.append(usr)
+                }
+                for _ in 0..<kConsumeLength {
+                    shared.inRoomUsers.removeFirst()
+                }
+                callback(res)
+            } else {
+                let res: [User] = shared.inRoomUsers
+                shared.inRoomUsers.removeAll()
+                callback(res)
+            }
+        }
+    }
+    
+    static func produce(_ users: [User]) {
+        let shared = DataFactory.shared
+        shared.op.async {
+            shared.inRoomUsers.append(contentsOf: users)
+        }
     }
 }
