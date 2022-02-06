@@ -22,9 +22,7 @@ class OverlayScene: SKScene {
         }
     }
      */
-    
-    var dataConsumeTimer: Timer?
-    
+        
     override init(size: CGSize) {
         super.init(size: size)
         
@@ -51,7 +49,6 @@ class OverlayScene: SKScene {
             ])
         ))
          */
-        dataConsumeTimer = startTimer()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -77,16 +74,6 @@ class OverlayScene: SKScene {
 }
 
 extension OverlayScene {
-    
-    func startTimer() -> Timer {
-        let interval: TimeInterval = 5
-        let timer: Timer = Timer(timeInterval: interval, repeats: true) { [weak self] _ in
-            self?.addGoblin(withUid: "123")
-        }
-        RunLoop.main.add(timer, forMode: .common)
-        timer.fire()
-        return timer
-    }
     
     func random() -> CGFloat {
       return CGFloat(Float(arc4random()) / Float(0xFFFFFFFF))

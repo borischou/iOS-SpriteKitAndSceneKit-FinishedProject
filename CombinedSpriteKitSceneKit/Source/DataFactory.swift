@@ -9,39 +9,84 @@
 import Foundation
 
 let kConsumeLength: NSInteger = 5
+let kConsumeInterval: TimeInterval = 1
 
 class DataFactory: NSObject {
     
     static let shared: DataFactory = DataFactory()
     
+    static var consumer: (([User]) -> Void)? {
+        get {
+            let shared = DataFactory.shared
+            return shared.consumer
+        }
+        set {
+            let shared = DataFactory.shared
+            shared.consumer = newValue
+        }
+    }
+    
+    var consumeInterval: TimeInterval = kConsumeInterval
+    
+    var consumeLength: NSInteger = kConsumeLength
+    
+    var consumer: (([User]) -> Void)?
+    
+    var consumeTimer: Timer?
+    
+    lazy var dataSource: DataSource = DataSource()
+    
     lazy var inRoomUsers: [User] = [User]()
     
-    lazy var op: DispatchQueue = DispatchQueue(label: "com.xhs.datafactory.opqueue")
+    lazy var op: DispatchQueue = DispatchQueue(label: "com.dance.data.op")
     
-    static func consume(_ callback: @escaping (([User]) -> Void)) {
+    static func consume(withTimeInterval interval: TimeInterval, length: NSInteger, callback: @escaping (([User]) -> Void)) {
         let shared = DataFactory.shared
-        shared.op.async {
-            if shared.inRoomUsers.count > kConsumeLength {
+        shared.consumeLength = length
+        shared.startTimer(withConsumer: callback, interval: interval)
+    }
+    
+    func consume(_ callback: @escaping (([User]) -> Void)) {
+        op.async {
+            if self.inRoomUsers.count > self.consumeLength {
                 var res: [User] = [User]()
-                for (idx, usr) in shared.inRoomUsers.enumerated() where idx < kConsumeLength {
+                for (idx, usr) in self.inRoomUsers.enumerated() where idx < self.consumeLength {
                     res.append(usr)
                 }
-                for _ in 0..<kConsumeLength {
-                    shared.inRoomUsers.removeFirst()
+                for _ in 0..<self.consumeLength {
+                    self.inRoomUsers.removeFirst()
                 }
                 callback(res)
             } else {
-                let res: [User] = shared.inRoomUsers
-                shared.inRoomUsers.removeAll()
+                let res: [User] = self.inRoomUsers
+                self.inRoomUsers.removeAll()
                 callback(res)
             }
         }
     }
     
-    static func produce(_ users: [User]) {
-        let shared = DataFactory.shared
-        shared.op.async {
-            shared.inRoomUsers.append(contentsOf: users)
+    func produce(_ users: [User]) {
+        op.async {
+            self.inRoomUsers.append(contentsOf: users)
         }
+    }
+    
+    func stopTimer() {
+        consumeTimer?.invalidate()
+    }
+    
+    @discardableResult
+    func startTimer(withConsumer con: @escaping (([User]) -> Void), interval: TimeInterval) -> Timer? {
+        consumer = con
+        consumeInterval = interval
+        let timer: Timer = Timer(timeInterval: consumeInterval, repeats: true) { [weak self] _ in
+            self?.consume({ users in
+                self?.consumer?(users)
+            })
+        }
+        RunLoop.main.add(timer, forMode: .common)
+        timer.fire()
+        consumeTimer = timer
+        return timer
     }
 }
