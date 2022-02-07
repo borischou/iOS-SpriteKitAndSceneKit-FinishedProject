@@ -8,8 +8,9 @@
 
 import Foundation
 
-let kConsumeLength: NSInteger = 5
+let kConsumeLength: Int = 5
 let kConsumeInterval: TimeInterval = 1
+let kInRoomUsrMaxCount: Int = 200
 
 class DataFactory: NSObject {
     
@@ -28,7 +29,9 @@ class DataFactory: NSObject {
     
     var consumeInterval: TimeInterval = kConsumeInterval
     
-    var consumeLength: NSInteger = kConsumeLength
+    var consumeLength: Int = kConsumeLength
+    
+    var inRoomUsrMaxCount: Int = kInRoomUsrMaxCount
     
     var consumer: (([User]) -> Void)?
     
@@ -40,7 +43,7 @@ class DataFactory: NSObject {
     
     lazy var op: DispatchQueue = DispatchQueue(label: "com.dance.data.op")
     
-    static func consume(withTimeInterval interval: TimeInterval, length: NSInteger, callback: @escaping (([User]) -> Void)) {
+    static func consume(withTimeInterval interval: TimeInterval, length: Int, callback: @escaping (([User]) -> Void)) {
         let shared = DataFactory.shared
         shared.consumeLength = length
         shared.startTimer(withConsumer: callback, interval: interval)
@@ -53,7 +56,7 @@ class DataFactory: NSObject {
                 for (idx, usr) in self.inRoomUsers.enumerated() where idx < self.consumeLength {
                     res.append(usr)
                 }
-                for _ in 0..<self.consumeLength {
+                for idx in 0..<self.consumeLength where self.inRoomUsers.count > idx {
                     self.inRoomUsers.removeFirst()
                 }
                 callback(res)
@@ -68,6 +71,12 @@ class DataFactory: NSObject {
     func produce(_ users: [User]) {
         op.async {
             self.inRoomUsers.append(contentsOf: users)
+            if self.inRoomUsers.count > self.inRoomUsrMaxCount {
+                let diffCount: Int = self.inRoomUsrMaxCount - self.inRoomUsers.count
+                for idx in 0..<diffCount where self.inRoomUsers.count > idx {
+                    self.inRoomUsers.removeFirst()
+                }
+            }
         }
     }
     
