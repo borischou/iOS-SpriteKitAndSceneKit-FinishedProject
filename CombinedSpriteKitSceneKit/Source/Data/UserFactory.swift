@@ -1,5 +1,5 @@
 //
-//  DataFactory.swift
+//  UserFactory.swift
 //  CombinedSpriteKitSceneKit
 //
 //  Created by 周博立 on 2022/2/4.
@@ -12,39 +12,33 @@ let kConsumeLength: Int = 5
 let kConsumeInterval: TimeInterval = 1
 let kInRoomUsrMaxCount: Int = 200
 
-class DataFactory: NSObject {
+class UserFactory: NSObject {
     
-    static let shared: DataFactory = DataFactory()
-    
+    static let shared: UserFactory = UserFactory()
     static var consumer: (([User]) -> Void)? {
         get {
-            let shared = DataFactory.shared
+            let shared = UserFactory.shared
             return shared.consumer
         }
         set {
-            let shared = DataFactory.shared
+            let shared = UserFactory.shared
             shared.consumer = newValue
         }
     }
     
     var consumeInterval: TimeInterval = kConsumeInterval
-    
     var consumeLength: Int = kConsumeLength
-    
     var inRoomUsrMaxCount: Int = kInRoomUsrMaxCount
-    
     var consumer: (([User]) -> Void)?
-    
     var consumeTimer: Timer?
     
     lazy var dataSource: DataSource = DataSource()
-    
     lazy var inRoomUsers: [User] = [User]()
-    
+    lazy var inRoomUserMap: [String: Any] = [String: Any]()
     lazy var op: DispatchQueue = DispatchQueue(label: "com.dance.data.op")
     
     static func consume(withTimeInterval interval: TimeInterval, length: Int, callback: @escaping (([User]) -> Void)) {
-        let shared = DataFactory.shared
+        let shared = UserFactory.shared
         shared.consumeLength = length
         shared.startTimer(withConsumer: callback, interval: interval)
     }
@@ -57,12 +51,16 @@ class DataFactory: NSObject {
                     res.append(usr)
                 }
                 for idx in 0..<self.consumeLength where self.inRoomUsers.count > idx {
-                    self.inRoomUsers.removeFirst()
+                    if let usr = self.inRoomUsers.first {
+                        self.inRoomUserMap.removeValue(forKey: usr.uid)
+                        self.inRoomUsers.removeFirst()
+                    }
                 }
                 callback(res)
             } else {
                 let res: [User] = self.inRoomUsers
                 self.inRoomUsers.removeAll()
+                self.inRoomUserMap.removeAll()
                 callback(res)
             }
         }
@@ -77,6 +75,9 @@ class DataFactory: NSObject {
                     self.inRoomUsers.removeFirst()
                 }
             }
+            for usr in self.inRoomUsers {
+                self.inRoomUserMap[usr.uid] = usr
+            }
         }
     }
     
@@ -84,8 +85,7 @@ class DataFactory: NSObject {
         consumeTimer?.invalidate()
     }
     
-    @discardableResult
-    func startTimer(withConsumer con: @escaping (([User]) -> Void), interval: TimeInterval) -> Timer? {
+    func startTimer(withConsumer con: @escaping (([User]) -> Void), interval: TimeInterval) {
         consumer = con
         consumeInterval = interval
         let timer: Timer = Timer(timeInterval: consumeInterval, repeats: true) { [weak self] _ in
@@ -96,6 +96,5 @@ class DataFactory: NSObject {
         RunLoop.main.add(timer, forMode: .common)
         timer.fire()
         consumeTimer = timer
-        return timer
     }
 }
