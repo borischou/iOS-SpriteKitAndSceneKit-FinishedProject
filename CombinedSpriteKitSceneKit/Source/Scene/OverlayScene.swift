@@ -20,8 +20,13 @@ class OverlayScene: SKScene {
         MessageFactory.shared.startReceiveTimer()
         MessageFactory.shared.startConsumeTimer { [weak self] messages in
             for msg in messages {
-                self?.addGoblin(withUid: msg.sender.uid, said: msg.content)
+                self?.addGoblin(withMessage: msg)
             }
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
+            MessageFactory.shared.stopConsumeTimer()
+            MessageFactory.shared.stopReceiveTimer()
         }
     }
     
@@ -40,7 +45,7 @@ extension OverlayScene {
       return random() * (max - min) + min
     }
     
-    func addGoblin(withUid uid: String = "", said: String?) {
+    func addGoblin(withMessage message: Message) {
         guard let goblin = Skeleton(fromJSON: "goblins-ess", atlas: "Goblins", skin: "goblin") else {
           return
         }
@@ -52,14 +57,14 @@ extension OverlayScene {
             goblin.run(SKAction.repeatForever(walk))
         }
         
-        addName(for: goblin)
-        addBubble(said: said ?? "", for: goblin)
+        addName(for: goblin, dancer: message.sender)
+        addBubble(for: goblin, message: message)
     }
     
-    func addName(for goblin: SKNode) {
+    func addName(for goblin: SKNode, dancer: User) {
         let x: CGFloat = 0
         let y: CGFloat = -30
-        let name = SKLabelNode(text: "我是昵称")
+        let name = SKLabelNode(text: "\(dancer.uid)")
         name.fontSize = 50
         name.fontColor = .white
         name.fontName = "Helvetica"
@@ -67,8 +72,8 @@ extension OverlayScene {
         goblin.addChild(name)
     }
     
-    func addBubble(said text: String, for goblin: SKNode, duration: TimeInterval = 3) {
-        let bubble = SKLabelNode(text: text)
+    func addBubble(for goblin: SKNode, message: Message, duration: TimeInterval = 3) {
+        let bubble = SKLabelNode(text: message.content)
         bubble.fontColor = .black
         bubble.fontName = "Helvetica"
         bubble.fontSize = 50
