@@ -9,7 +9,8 @@
 import Foundation
 
 let kMsgConsumeLength: Int = 10
-let kMsgConsumeInterval: TimeInterval = 1
+let kMsgConsumeInterval: TimeInterval = 5
+let kMsgReceiveInterval: TimeInterval = 1
 
 class MessageFactory: NSObject {
     
@@ -33,6 +34,9 @@ class MessageFactory: NSObject {
     var consumer: (([Message]) -> Void)?
     var consumeTimer: Timer?
     
+    var receiveInterval: TimeInterval = kMsgReceiveInterval
+    var receiveTimer: Timer?
+    
     lazy var dataSource: DataSource = DataSource()
     lazy var caches: [Message] = [Message]()
     lazy var op: DispatchQueue = DispatchQueue(label: "com.dance.msg.op")
@@ -51,7 +55,7 @@ class MessageFactory: NSObject {
     func receive(_ users: [User]) {
         userFactory.inRoomUsers.append(contentsOf: users)
         if userFactory.inRoomUsers.count > userFactory.inRoomUsrMaxCount {
-            let diffCount: Int = userFactory.inRoomUsrMaxCount - userFactory.inRoomUsers.count
+            let diffCount: Int = abs(userFactory.inRoomUsrMaxCount - userFactory.inRoomUsers.count)
             for idx in 0..<diffCount where userFactory.inRoomUsers.count > idx {
                 userFactory.inRoomUsers.removeFirst()
             }
@@ -64,7 +68,7 @@ class MessageFactory: NSObject {
     static func consume(withTimeInterval interval: TimeInterval, length: Int, callback: @escaping (([Message]) -> Void)) {
         let shared = MessageFactory.shared
         shared.consumeLength = length
-        shared.startTimer(withConsumer: callback, interval: interval)
+        shared.startConsumeTimer(withConsumer: callback, interval: interval)
     }
     
     func consume(_ callback: @escaping (([Message]) -> Void)) {
@@ -85,22 +89,38 @@ class MessageFactory: NSObject {
             }
         }
     }
+}
+
+extension MessageFactory {
+    func stopReceiveTimer() {
+        receiveTimer?.invalidate()
+    }
     
-    func stopTimer() {
+    func startReceiveTimer(withInterval interval: TimeInterval = kMsgReceiveInterval) {
+        let timer: Timer = Timer(timeInterval: receiveInterval, repeats: true) { [weak self] _ in
+            DataSource.getMessages { messages in
+                self?.receive(messages)
+            }
+        }
+        RunLoop.main.add(timer, forMode: .common)
+        timer.fire()
+        receiveTimer = timer
+    }
+    
+    func stopConsumeTimer() {
         consumeTimer?.invalidate()
     }
     
-    func startTimer(withConsumer con: @escaping (([Message]) -> Void), interval: TimeInterval) {
+    func startConsumeTimer(withConsumer con: @escaping (([Message]) -> Void), interval: TimeInterval = kMsgConsumeInterval) {
         consumer = con
         consumeInterval = interval
         let timer: Timer = Timer(timeInterval: consumeInterval, repeats: true) { [weak self] _ in
-            self?.consume({ users in
-                self?.consumer?(users)
+            self?.consume({ messages in
+                self?.consumer?(messages)
             })
         }
         RunLoop.main.add(timer, forMode: .common)
         timer.fire()
         consumeTimer = timer
     }
-    
 }

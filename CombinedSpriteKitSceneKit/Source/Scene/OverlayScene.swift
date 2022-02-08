@@ -11,66 +11,23 @@ import SpriteKit
 import Spine
 
 class OverlayScene: SKScene {
-    
-    /*
-    var pauseNode: SKSpriteNode!
-    var scoreNode: SKLabelNode!
-    
-    var score = 0 {
-        didSet {
-            scoreNode.text = "Score: \(score)"
-        }
-    }
-     */
         
     override init(size: CGSize) {
         super.init(size: size)
         
         backgroundColor = .clear
-        /*
-        let spriteSize = size.width/12
-        pauseNode = SKSpriteNode(imageNamed: "Pause Button")
-        pauseNode.size = CGSize(width: spriteSize, height: spriteSize)
-        pauseNode.position = CGPoint(x: spriteSize + 8, y: spriteSize + 8)
         
-        scoreNode = SKLabelNode(text: "Score: 0")
-        scoreNode.fontName = "DINAlternate-Bold"
-        scoreNode.fontColor = .black
-        scoreNode.fontSize = 24
-        scoreNode.position = CGPoint(x: size.width/2, y: pauseNode.position.y - 9)
-        
-        addChild(pauseNode)
-        addChild(scoreNode)
-        
-        run(SKAction.repeatForever(
-          SKAction.sequence([
-            SKAction.run(addGoblin),
-            SKAction.wait(forDuration: 1.0)
-            ])
-        ))
-         */
+        MessageFactory.shared.startReceiveTimer()
+        MessageFactory.shared.startConsumeTimer { [weak self] messages in
+            for msg in messages {
+                self?.addGoblin(withUid: msg.sender.uid, said: msg.content)
+            }
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
-    /*
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch = touches.first
-        let location = touch?.location(in: self)
-        
-        if pauseNode.contains(location!) {
-            if !isPaused {
-                pauseNode.texture = SKTexture(imageNamed: "Play Button")
-            } else {
-                pauseNode.texture = SKTexture(imageNamed: "Pause Button")
-            }
-            
-            isPaused = !isPaused
-        }
-    }
-     */
 }
 
 extension OverlayScene {
@@ -83,7 +40,7 @@ extension OverlayScene {
       return random() * (max - min) + min
     }
     
-    func addGoblin(withUid uid: String = "") {
+    func addGoblin(withUid uid: String = "", said: String?) {
         guard let goblin = Skeleton(fromJSON: "goblins-ess", atlas: "Goblins", skin: "goblin") else {
           return
         }
@@ -96,7 +53,7 @@ extension OverlayScene {
         }
         
         addName(for: goblin)
-        addBubble(said: "hello", for: goblin)
+        addBubble(said: said ?? "", for: goblin)
     }
     
     func addName(for goblin: SKNode) {

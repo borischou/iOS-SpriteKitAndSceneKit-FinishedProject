@@ -10,11 +10,11 @@ import Foundation
 
 protocol User: AnyObject {
     var uid: String { get set }
-    var avatar: String { get set }
+    var avatar: String? { get set }
 }
 
 protocol Message: AnyObject {
     var sender: User { get set }
-    var content: String { get set }
+    var content: String? { get set }
     var mid: String { get set }
 }
